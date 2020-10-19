@@ -1,4 +1,5 @@
 <?php
+
 namespace Marem\PayumPaybox\Action;
 
 use Payum\Core\Action\GatewayAwareAction;
@@ -9,7 +10,7 @@ use Payum\Core\Request\Cancel;
 class CancelAction extends GatewayAwareAction
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Cancel $request
      */
@@ -23,7 +24,7 @@ class CancelAction extends GatewayAwareAction
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {

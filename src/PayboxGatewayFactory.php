@@ -1,7 +1,7 @@
 <?php
+
 namespace Marem\PayumPaybox;
 
-use Marem\PayumPaybox\Action\AuthorizeAction;
 use Marem\PayumPaybox\Action\CancelAction;
 use Marem\PayumPaybox\Action\CaptureAction;
 use Marem\PayumPaybox\Action\ChoosePaymentTypeAction;
@@ -15,7 +15,7 @@ use Payum\Core\GatewayFactory;
 class PayboxGatewayFactory extends GatewayFactory
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function populateConfig(ArrayObject $config)
     {
@@ -31,11 +31,11 @@ class PayboxGatewayFactory extends GatewayFactory
             'payum.template.choose_card_type' => '@PayumPaybox/Action/choose_payment_type.html.twig',
             'payum.action.choose_payment_type' => function (ArrayObject $config) {
                 return new ChoosePaymentTypeAction($config['payum.template.choose_card_type']);
-            }
+            },
         ]);
 
         if (false == $config['payum.api']) {
-            $config['payum.default_options'] = array(
+            $config['payum.default_options'] = [
                 'site' => '',
                 'rang' => '',
                 'identifiant' => '',
@@ -44,10 +44,10 @@ class PayboxGatewayFactory extends GatewayFactory
                 'retour' => 'Mt:M;Ref:R;Auto:A;error_code:E;type_carte:C',
                 'sandbox' => true,
                 'type_paiement' => '',
-                'type_carte' => ''
-            );
+                'type_carte' => '',
+            ];
             $config->defaults($config['payum.default_options']);
-            $config['payum.required_options'] = array('site', 'rang', 'identifiant', 'hmac');
+            $config['payum.required_options'] = ['site', 'rang', 'identifiant', 'hmac'];
 
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);

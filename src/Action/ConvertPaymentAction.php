@@ -1,19 +1,18 @@
 <?php
+
 namespace Marem\PayumPaybox\Action;
 
 use Marem\PayumPaybox\PayBoxRequestParams;
-use Payum\Core\Action\ActionInterface;
 use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
-use Payum\Core\Request\GetCurrency;
 
 class ConvertPaymentAction extends GatewayAwareAction
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Convert $request
      */
@@ -34,21 +33,21 @@ class ConvertPaymentAction extends GatewayAwareAction
         $details[PayBoxRequestParams::PBX_EFFECTUE] = $token->getTargetUrl();
         $details[PayBoxRequestParams::PBX_ANNULE] = $token->getTargetUrl();
         $details[PayBoxRequestParams::PBX_REFUSE] = $token->getTargetUrl();
-        $dateTime = date("c");
+        $dateTime = date('c');
         $details[PayBoxRequestParams::PBX_TIME] = $dateTime;
 
         $request->setResult((array) $details);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {
         return
             $request instanceof Convert &&
             $request->getSource() instanceof PaymentInterface &&
-            $request->getTo() == 'array'
+            'array' == $request->getTo()
         ;
     }
 }
