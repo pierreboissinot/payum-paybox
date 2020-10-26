@@ -43,8 +43,6 @@ class ConvertPaymentAction extends ApiLoggerAwareAction implements ActionInterfa
 
         if (false === isset($details[PayBoxRequestParams::PBX_REPONDRE_A])) {
             $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $payment);
-            // Todo: delete this comment
-            // $targetUrl = str_replace('web', 'fidel-fillaud-dev.tunnel.lephare.io', $notifyToken->getTargetUrl());
             $targetUrl = $notifyToken->getTargetUrl();
             $details[PayBoxRequestParams::PBX_REPONDRE_A] = $targetUrl;
             $this->logger->notice('[Paybox] PBX_REPONDRE_A', [
