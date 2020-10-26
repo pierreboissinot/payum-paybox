@@ -158,24 +158,9 @@ class Api implements LoggerAwareInterface
     {
         // Si la clé est en ASCII, On la transforme en binaire
         $binKey = pack('H*', $hmac);
-        $msg = self::stringify($fields);
+        $msg = http_build_query($fields);
 
         return strtoupper(hash_hmac($fields[PayBoxRequestParams::PBX_HASH], $msg, $binKey));
-    }
-
-    /**
-     * Makes an array of parameters become a querystring like string.
-     *
-     * @return string
-     */
-    public static function stringify(array $array)
-    {
-        $result = [];
-        foreach ($array as $key => $value) {
-            $result[] = sprintf('%s=%s', $key, $value);
-        }
-
-        return implode('&', $result);
     }
 
     public function getOptions(): array
@@ -261,11 +246,11 @@ class Api implements LoggerAwareInterface
         } elseif (128 == $signatureLength) {
             $signatureInitialized = $signature;
         } else {
-                $this->logger->error('Fail to base_decode signature', [
+            $this->logger->error('Fail to base_decode signature', [
                     'signature' => $signature,
                 ]);
 
-                return false;
+            return false;
         }
 
         $file = fopen(__DIR__.'/Resources/pubkey.pem', 'rb');
@@ -299,7 +284,7 @@ class Api implements LoggerAwareInterface
         $this->logger->debug('[Paybox] arrayDataExcludingSignature', [
             'arrayDataExcludingSignature' => $arrayDataExcludingSignature,
         ]);
-        $data = self::stringify($arrayDataExcludingSignature);
+        $data = http_build_query($arrayDataExcludingSignature);
 
         $this->logger->debug('[Paybox] Verify signature', [
             'data' => urlencode($data),
