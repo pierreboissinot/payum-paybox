@@ -11,13 +11,17 @@ use Marem\PayumPaybox\Action\RefundAction;
 use Marem\PayumPaybox\Action\StatusAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class PayboxGatewayFactory extends GatewayFactory
+class PayboxGatewayFactory extends GatewayFactory implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
-     * {@inheritdoc}
+     * @param ArrayObject<string> $config
      */
-    protected function populateConfig(ArrayObject $config)
+    protected function populateConfig(ArrayObject $config): void
     {
         $config->defaults([
             'payum.factory_name' => 'paybox',
@@ -41,7 +45,7 @@ class PayboxGatewayFactory extends GatewayFactory
                 'identifiant' => '',
                 'hmac' => '',
                 'hash' => 'SHA512',
-                'retour' => 'Mt:M;Ref:R;Auto:A;error_code:E;type_carte:C',
+                'retour' => 'amount:M;reference:R;authorization_number:A;error_code:E;card_type:C;signature:K',
                 'sandbox' => true,
                 'type_paiement' => '',
                 'type_carte' => '',

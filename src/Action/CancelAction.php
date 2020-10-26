@@ -14,7 +14,7 @@ class CancelAction extends GatewayAwareAction
      *
      * @param Cancel $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 

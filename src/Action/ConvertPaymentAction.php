@@ -2,21 +2,26 @@
 
 namespace Marem\PayumPaybox\Action;
 
+use Marem\PayumPaybox\ApiLoggerAwareAction;
 use Marem\PayumPaybox\PayBoxRequestParams;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
+use Payum\Core\Security\GenericTokenFactoryAwareInterface;
+use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 
-class ConvertPaymentAction extends GatewayAwareAction
+class ConvertPaymentAction extends ApiLoggerAwareAction implements ActionInterface, GenericTokenFactoryAwareInterface
 {
+    use GenericTokenFactoryAwareTrait;
+
     /**
      * {@inheritdoc}
      *
      * @param Convert $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -36,6 +41,16 @@ class ConvertPaymentAction extends GatewayAwareAction
         $dateTime = date('c');
         $details[PayBoxRequestParams::PBX_TIME] = $dateTime;
 
+        // TODO: delete this block
+        if (false === isset($details[PayBoxRequestParams::PBX_REPONDRE_A])) {
+            $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $payment);
+            $targetUrl = str_replace('web', 'fidel-fillaud-dev.tunnel.lephare.io', $notifyToken->getTargetUrl());
+            $details[PayBoxRequestParams::PBX_REPONDRE_A] = $targetUrl;
+            $this->logger->notice('[Paybox] PBX_REPONDRE_A', [
+                'targetUrl' => $targetUrl,
+            ]);
+        }
+
         $request->setResult((array) $details);
     }
 
@@ -47,7 +62,7 @@ class ConvertPaymentAction extends GatewayAwareAction
         return
             $request instanceof Convert &&
             $request->getSource() instanceof PaymentInterface &&
-            'array' == $request->getTo()
+            'array' === $request->getTo()
         ;
     }
 }

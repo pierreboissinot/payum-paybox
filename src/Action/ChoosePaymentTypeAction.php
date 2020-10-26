@@ -37,7 +37,7 @@ class ChoosePaymentTypeAction extends GatewayAwareAction implements ApiAwareInte
      *
      * @param ChoosePaymentType $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -51,7 +51,7 @@ class ChoosePaymentTypeAction extends GatewayAwareAction implements ApiAwareInte
             $details[PayBoxRequestParams::PBX_TYPEPAIEMENT] = $getHttpRequest->request['paymentType'];
             $details[PayBoxRequestParams::PBX_TYPECARTE] = $getHttpRequest->request['cardType'];
 
-            return null;
+            return;
         }
 
         $template = new RenderTemplate($this->templateName, [

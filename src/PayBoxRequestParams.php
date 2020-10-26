@@ -86,4 +86,12 @@ interface PayBoxRequestParams
      * Paybox time param.
      */
     const PBX_TIME = 'PBX_TIME';
+
+    /**
+     * Server to server callback URL, also called IPN (Instant Payment Notification), called
+     * immediately after each payment attempt, whatever the result is. It allows the merchant to
+     * manage safely the validation of the orders.
+     * Fields defined in PBX_RETOUR will be sent to this page.
+     */
+    const PBX_REPONDRE_A = 'PBX_REPONDRE_A';
 }

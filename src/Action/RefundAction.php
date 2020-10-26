@@ -14,7 +14,7 @@ class RefundAction extends GatewayAwareAction
      *
      * @param Refund $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
