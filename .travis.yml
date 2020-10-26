@@ -1,0 +1,43 @@
+language: php
+
+env:
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=weak
+
+git:
+  depth: 10
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+matrix:
+  include:
+    - php: 7.1
+      env:
+        - SYMFONY_REQUIRE=^4
+        - COMPOSER_FLAGS="--prefer-lowest --prefer-stable"
+    - php: 7.2
+      env: SYMFONY_REQUIRE=^4
+    - php: 7.3
+      env: SYMFONY_REQUIRE=^4
+    - php: 7.4
+      env: SYMFONY_REQUIRE=^4
+    - php: 7.2
+      env:
+        - SYMFONY_REQUIRE=^5
+        - COMPOSER_FLAGS="--prefer-lowest --prefer-stable"
+    - php: 7.3
+      env: SYMFONY_REQUIRE=^5
+    - php: 7.4
+      env: SYMFONY_REQUIRE=^5
+
+install:
+  - composer validate
+  - composer i --no-interaction --no-progress --no-suggest
+
+script:
+  - composer lint
+  - composer test
