@@ -261,15 +261,11 @@ class Api implements LoggerAwareInterface
         } elseif (128 == $signatureLength) {
             $signatureInitialized = $signature;
         } else {
-            $signatureInitialized = null;
-            //throw new \Exception('Bad signature format.');
-        }
-        if (false === $signatureInitialized) {
-            $this->logger->error('Fail to base_decode signature', [
-                'signature' => $signature,
-            ]);
+                $this->logger->error('Fail to base_decode signature', [
+                    'signature' => $signature,
+                ]);
 
-            return false;
+                return false;
         }
 
         $file = fopen(__DIR__.'/Resources/pubkey.pem', 'rb');
