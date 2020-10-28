@@ -158,7 +158,7 @@ class Api implements LoggerAwareInterface
     {
         // Si la clé est en ASCII, On la transforme en binaire
         $binKey = pack('H*', $hmac);
-        $msg = http_build_query($fields);
+        $msg = Tools::stringify($fields);
 
         return strtoupper(hash_hmac($fields[PayBoxRequestParams::PBX_HASH], $msg, $binKey));
     }
@@ -284,7 +284,7 @@ class Api implements LoggerAwareInterface
         $this->logger->debug('[Paybox] arrayDataExcludingSignature', [
             'arrayDataExcludingSignature' => $arrayDataExcludingSignature,
         ]);
-        $data = http_build_query($arrayDataExcludingSignature);
+        $data = Tools::stringify($arrayDataExcludingSignature);
 
         $this->logger->debug('[Paybox] Verify signature', [
             'data' => urlencode($data),
