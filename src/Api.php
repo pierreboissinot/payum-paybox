@@ -284,7 +284,7 @@ class Api implements LoggerAwareInterface
         $this->logger->debug('[Paybox] arrayDataExcludingSignature', [
             'arrayDataExcludingSignature' => $arrayDataExcludingSignature,
         ]);
-        $data = Tools::stringify($arrayDataExcludingSignature);
+        $data = http_build_query($arrayDataExcludingSignature);
 
         $this->logger->debug('[Paybox] Verify signature', [
             'data' => urlencode($data),
